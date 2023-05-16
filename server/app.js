@@ -7,6 +7,10 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const { notFound, errorHandler } = require('./utilities/errors');
 
+const authRoutes = require('./routes/auth.route');
+const chatRoutes = require('./routes/chat.route');
+const messagesRoutes = require('./routes/messages.route');
+
 const app = express();
 
 app.use(express.json());
@@ -18,6 +22,10 @@ app.use(xss());
 app.disable('x-powered-by');
 
 app.get('/', (req, res) => res.status(200).send('Welcome to talkative API'));
+
+app.use('/api/auth', authRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/message', messagesRoutes);
 
 app.all('*', notFound);
 app.use(errorHandler);
