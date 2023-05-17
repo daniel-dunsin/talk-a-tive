@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { BiLoader } from 'react-icons/bi';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 export interface ITabButton {
   selected: boolean;
@@ -51,8 +51,8 @@ export const Button = (props: IButton) => {
     >
       <p>
         {props.isLoading ? (
-          <span className='text-[2rem] animate-spin'>
-            <BiLoader />
+          <span className='text-[1.2rem] animate-spin inline-block mx-auto'>
+            <BiLoaderAlt />
           </span>
         ) : (
           props.text

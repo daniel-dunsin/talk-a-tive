@@ -6,6 +6,7 @@ class CustomError extends Error {
 }
 
 const errorHandler = (err, req, res, next) => {
+  console.log(err);
   if (err instanceof CustomError) {
     return res.status(err.statusCode).send({ err: err.message });
   }

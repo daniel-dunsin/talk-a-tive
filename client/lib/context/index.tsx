@@ -1,5 +1,6 @@
 import React, { ReactElement, useContext } from 'react';
-import { IAppContext } from '../types';
+import { ToastContainer } from 'react-toastify';
+import { IAppContext } from '../types/index.types';
 
 interface IProviderProps {
   children: ReactElement | ReactElement[];
@@ -9,7 +10,18 @@ const AppContext = React.createContext({} as IAppContext);
 
 export const AppProvider = (props: IProviderProps) => {
   return (
-    <AppContext.Provider value={{}}>{props?.children}</AppContext.Provider>
+    <AppContext.Provider value={{}}>
+      <ToastContainer
+        position='top-right'
+        autoClose={2000}
+        hideProgressBar={true}
+        theme='light'
+        closeButton={true}
+        pauseOnHover={false}
+        pauseOnFocusLoss={false}
+      />
+      {props?.children}
+    </AppContext.Provider>
   );
 };
 

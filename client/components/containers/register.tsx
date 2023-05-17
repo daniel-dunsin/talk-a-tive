@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import { errorRes } from '@/lib/api/api-responses';
+import { register } from '@/lib/api/auth';
+import { useRouter } from 'next/router';
+import React, { ChangeEvent, useState } from 'react';
 import { Button } from '../ui/buttons';
 import Input from '../ui/inputs';
 
@@ -8,9 +11,38 @@ const Register = () => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [dp, setDp] = useState<string | File>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const router = useRouter();
+
+  const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    if (password.length < 8) {
+      errorRes('Password is too short');
+      setIsLoading(false);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      errorRes('Passwords do not match');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      await register({ username, email, password, confirmPassword, dp });
+
+      setIsLoading(false);
+      router.push('/');
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <form>
+    <form onSubmit={onSubmit}>
       <div className='flex flex-col space-y-2 mb-3'>
         {/* Username */}
         <Input
@@ -73,6 +105,7 @@ const Register = () => {
           submitType={true}
           fullWidth={true}
           color='white'
+          isLoading={isLoading}
         />
       </div>
     </form>

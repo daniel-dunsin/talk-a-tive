@@ -1,11 +1,13 @@
+require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const fs = require('fs');
+const colors = require('colors');
 
 cloudinary.config({
-  api_key: '',
-  api_secret: '',
-  cloud_name: '',
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+  cloud_name: process.env.CLOUD_NAME,
 });
 
 const multerConfigs = {
@@ -16,7 +18,7 @@ const multerConfigs = {
     filename: (req, file, cb) => {
       return cb(
         null,
-        `${new Date().getTime() * Math.random()},${file.originalname}`
+        `${new Date().getTime() * Math.random()}${file.originalname}`
       );
     },
   }),
@@ -37,7 +39,9 @@ const uploadToCloud = async (path) => {
     folder: 'chat-app-dps',
   });
 
-  await fs.unlink(path);
+  await fs.unlink(path, () => {
+    console.log('File Deleted'.red.bold);
+  });
 
   return file.url;
 };
