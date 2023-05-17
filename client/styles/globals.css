@@ -1,3 +1,20 @@
 @tailwind utilities;
 @tailwind base;
 @tailwind components;
+
+@font-face {
+  font-family: 'roboto';
+  src: url(../public/font/Roboto-Regular.ttf);
+}
+
+html {
+  font-family: 'roboto';
+}
+
+body {
+  min-height: 100vh;
+  background-image: url(../public/images/background.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
