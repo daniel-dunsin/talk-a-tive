@@ -34,9 +34,10 @@ const UsersContainer = (props: UsersContainerProps) => {
       }}
     >
       <div
-        className='flex items-center space-x-2 cursor-pointer'
+        className='flex items-center gap-2 cursor-pointer'
         data-testid='users-containers'
       >
+        (
         <img
           src={props?.dp}
           className='inline-block mr-2 w-[40px] h-[40px] object-cover object-center rounded-full'

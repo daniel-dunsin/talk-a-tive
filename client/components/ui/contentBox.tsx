@@ -20,4 +20,25 @@ const ContentBox = (props: IContentBoxProps) => {
   );
 };
 
+interface ContentBoxWithHeaderProps extends IContentBoxProps {
+  text: string;
+  itemLeft?: ReactElement;
+  itemRight: ReactElement;
+}
+
+export const ContentBoxWithHeader = (props: ContentBoxWithHeaderProps) => {
+  return (
+    <ContentBox size={props.size} styles={props.styles}>
+      <header className='flex items-center justify-between'>
+        <div className='flex items-center gap-x-4'>
+          {props.itemLeft}
+          <h1 className='text-[100] text-[1.5rem] capitalize'>{props.text}</h1>
+        </div>
+        {props.itemRight}
+      </header>
+      <div className='bg-[#f0f0f0] p-4 mt-2 rounded-md'>{props.children}</div>
+    </ContentBox>
+  );
+};
+
 export default ContentBox;

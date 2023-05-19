@@ -1,5 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Chat = require('../models/chat.model');
+const User = require('../models/user.model');
+const Message = require('../models/message.model');
 const { CustomError } = require('../utilities/errors');
 
 module.exports.accessChat = asyncHandler(async (req, res, next) => {
@@ -24,4 +26,19 @@ module.exports.accessChat = asyncHandler(async (req, res, next) => {
 
     return res.status(200).send({ chat: fullChat });
   }
+});
+
+module.exports.getChats = asyncHandler(async (req, res, next) => {
+  let chats = await Chat.find({ users: req.userId })
+    .populate('users', '-password')
+    .populate('latestMessage');
+
+  chats = await User.populate(chats, {
+    path: 'latestMessage.sender',
+    select: '-password',
+  });
+
+  res.status(200).send({
+    chats,
+  });
 });

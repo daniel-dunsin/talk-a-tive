@@ -1,6 +1,8 @@
 const router = require('express').Router();
-const { accessChat } = require('../controllers/chat.controller');
+const { accessChat, getChats } = require('../controllers/chat.controller');
+const isAuth = require('../middlewares/isAuth');
 
-router.post('/access-chat', accessChat);
+router.get('/', isAuth, getChats);
+router.post('/access-chat', isAuth, accessChat);
 
 module.exports = router;

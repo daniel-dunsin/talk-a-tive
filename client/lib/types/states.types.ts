@@ -10,6 +10,7 @@ export interface IMessage {
   sender: IUser;
   text: string;
   chat: IChat;
+  _id: string;
 }
 
 export interface IChat {
@@ -18,4 +19,5 @@ export interface IChat {
   users: IUser[] | string[];
   latestMessage: IMessage;
   groupAdmin: IUser;
+  _id: string;
 }

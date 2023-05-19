@@ -23,3 +23,13 @@ export const openChat = async (friendId: string) => {
     errorRes(error);
   }
 };
+
+export const getChats = async () => {
+  try {
+    const response = await baseHttp.get('/chat');
+
+    return response.data?.chats;
+  } catch (error: any) {
+    errorRes(error);
+  }
+};
