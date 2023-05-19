@@ -94,4 +94,15 @@ module.exports.login = asyncHandler(async (req, res, next) => {
   });
 });
 
-module.exports.getUsers = asyncHandler(async (req, res, next) => {});
+module.exports.getUsers = asyncHandler(async (req, res, next) => {
+  const { search } = req.query;
+
+  const users = await User.find({
+    $or: [
+      { email: { $regex: search, $options: 'i' } },
+      { username: { $regex: search, $options: 'i' } },
+    ],
+  }).find({ _id: { $ne: req.userId } });
+
+  res.status(200).send({ users });
+});
