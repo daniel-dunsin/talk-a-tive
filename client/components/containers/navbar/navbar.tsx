@@ -24,7 +24,10 @@ const Navbar = () => {
             className='p-1 cursor-pointer'
             onClick={() => setSidebarOpen(true)}
           >
-            <span className='align-middle inline-block pr-2'>
+            <span
+              className='align-middle inline-block pr-2'
+              data-testid='sidebar-controller'
+            >
               <BiSearch />
             </span>
             <p className='sm:inline-block hidden'>Search user</p>
@@ -44,7 +47,10 @@ const Navbar = () => {
 
             {/* User profile */}
             <div className='relative'>
-              <div onClick={() => setProfileTabOpen((prev) => !prev)}>
+              <div
+                data-testid='profile-container'
+                onClick={() => setProfileTabOpen((prev) => !prev)}
+              >
                 <img
                   src={user?.dp}
                   alt={user?.username}

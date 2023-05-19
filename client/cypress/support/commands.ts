@@ -46,3 +46,25 @@ Cypress.Commands.add('httpGet' as any, (route, fixture) => {
     fixture,
   });
 });
+
+Cypress.Commands.add('setStorage' as any, () => {
+  const user = {
+    username: 'user@gmail.com',
+    email: 'adejaredaniel12@gmail.com',
+    dp: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
+    _id: 'user-id',
+    token: 'abcdefgh12345678',
+  };
+
+  cy.window().then((slug) => {
+    slug.localStorage.setItem('user', JSON.stringify(user));
+  });
+});
+
+Cypress.Commands.add('getByAttr' as any, (key, value) => {
+  cy.get(`[${key}='${value}']`);
+});
+
+Cypress.Commands.add('getById' as any, (id) => {
+  (cy as any).getByAttr('data-testid', id);
+});
