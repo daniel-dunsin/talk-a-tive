@@ -1,7 +1,7 @@
 import { authHttp } from '@/axios.config';
 import { AxiosError } from 'axios';
 import { ILogin, IRegister } from '../types/api.types';
-import { storeUser } from '../utilities/localStorage';
+import { deleteUser, storeUser } from '../utilities/localStorage';
 import { errorRes, loadingRes, successRes } from './api-responses';
 
 export const register = async (details: IRegister) => {
@@ -39,4 +39,11 @@ export const login = async (data: ILogin) => {
   } catch (error: any) {
     errorRes(error);
   }
+};
+
+export const logout = () => {
+  // No request, just delete the user from localstorage and redirect to auth
+  deleteUser();
+  window.location.replace('/auth');
+  successRes('Logged out successfully');
 };
