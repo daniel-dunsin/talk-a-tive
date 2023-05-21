@@ -16,12 +16,6 @@ baseHttp.interceptors.response.use(
   (error: AxiosError) => {
     const config = error.config;
 
-    if (error.response?.status === 401) {
-      errorRes('Session expired');
-      window.location.replace('/auth');
-      return Promise.reject(error);
-    }
-
     return Promise.reject(error);
   }
 );

@@ -4,7 +4,8 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { BiArrowBack } from 'react-icons/bi';
 import { useGlobalContext } from '@/lib/context';
 import { getChatMate } from '@/lib/utilities/chat.utils';
-import { OpenedChatModal } from './home-components';
+import { GroupModal, OpenedChatModal } from './home-components';
+import { IUser } from '@/lib/types/states.types';
 
 interface ChatRoomProps {
   setOpenedLayer: Dispatch<SetStateAction<'ChatList' | 'ChatRoom'>>;
@@ -13,8 +14,13 @@ interface ChatRoomProps {
 const ChatRoom = (props: ChatRoomProps) => {
   const { openedChat, user } = useGlobalContext();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [groupModalOpen, setGroupModalOpen] = useState<boolean>(false);
 
   const chatMate = openedChat && getChatMate(openedChat, user);
+
+  const closeGroupModal = () => {
+    setGroupModalOpen(false);
+  };
 
   if (!openedChat) {
     return (
@@ -31,14 +37,18 @@ const ChatRoom = (props: ChatRoomProps) => {
       size='md'
       styles='col-span-2'
       itemRight={
-        // Don't display the eye if it is a group chat
-        openedChat?.isGroupChat ? (
-          <></>
-        ) : (
-          <span className={styles.icon} onClick={() => setModalOpen(true)}>
-            <FaEye />
-          </span>
-        )
+        // Different function if it is a group chat
+
+        <span
+          className={styles.icon}
+          onClick={() => {
+            openedChat?.isGroupChat
+              ? setGroupModalOpen(true)
+              : setModalOpen(true);
+          }}
+        >
+          <FaEye />
+        </span>
       }
       itemLeft={
         // Display on mobile alone, to close the chat room on mobile
@@ -49,8 +59,26 @@ const ChatRoom = (props: ChatRoomProps) => {
           <BiArrowBack />
         </span>
       }
-      text={chatMate?.username as string}
+      text={
+        openedChat?.isGroupChat
+          ? openedChat?.name
+          : (chatMate?.username as string)
+      }
     >
+      <>
+        {groupModalOpen && openedChat?.isGroupChat && (
+          <GroupModal
+            onClose={closeGroupModal}
+            title='Edit Group'
+            name={openedChat?.name}
+            // Remove the logged in user from the users list
+            members={(openedChat?.users as IUser[])?.filter(
+              (member) => member?._id !== user?._id
+            )}
+          />
+        )}
+      </>
+
       <div className='w-full min-h-[65vh]'>
         {/* Modal for viewing chatmate */}
         {!openedChat?.isGroupChat && modalOpen && (

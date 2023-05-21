@@ -1,3 +1,5 @@
+import { IUser } from './states.types';
+
 export interface IRegister {
   email: string;
   password: string;
@@ -9,4 +11,9 @@ export interface IRegister {
 export interface ILogin {
   detail: string;
   password: string;
+}
+
+export interface ICreateGroup {
+  users: IUser[];
+  name: string;
 }

@@ -20,11 +20,13 @@ const SingleChat = (props: SingleChatProps) => {
       size='sm'
       styles={`${
         openedChat?._id === props?.chat?._id
-          ? 'bg-[royalblue] !text-white'
+          ? '!bg-[#555] !text-white'
           : 'bg-[#f8f8f8]'
-      } !py-2 !px-4 !shadow-none text-gray-800 hover:bg-[royalblue] hover:!text-white transition-all duration-200`}
+      } !py-2 !px-4 !shadow-none text-gray-800 hover:bg-[#555] hover:!text-white transition-all duration-200`}
       onClick={() => {
+        // Open the chat
         setOpenedChat(props?.chat);
+        // For mobile open the chat room as well
         props?.setOpenedLayer('ChatRoom');
       }}
     >

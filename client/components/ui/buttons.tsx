@@ -43,7 +43,7 @@ export const Button = (props: IButton) => {
         props.fitContent && 'max-w-fit'
       } ${props.extraStyles}`}
       onClick={props.onClick}
-      type={props.submitType ? 'submit' : 'button'}
+      type={props.submitType && !props?.isLoading ? 'submit' : 'button'}
       style={{
         color: props.color || '#000',
         backgroundColor: props.bg || '#555',

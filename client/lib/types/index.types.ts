@@ -7,4 +7,6 @@ export interface IAppContext {
   setLoadingChat: Dispatch<SetStateAction<boolean>>;
   openedChat: IChat | null;
   setOpenedChat: Dispatch<SetStateAction<IChat | null>>;
+  chats: IChat[];
+  setChats: Dispatch<SetStateAction<IChat[]>>;
 }

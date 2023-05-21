@@ -1,4 +1,5 @@
 import { baseHttp } from '@/axios.config';
+import { ICreateGroup } from '../types/api.types';
 import { IUser } from '../types/states.types';
 import { errorRes, loadingRes } from './api-responses';
 
@@ -29,6 +30,36 @@ export const getChats = async () => {
     const response = await baseHttp.get('/chat');
 
     return response.data?.chats;
+  } catch (error: any) {
+    errorRes(error);
+  }
+};
+
+export const createGroup = async (group: ICreateGroup) => {
+  try {
+    const response = await baseHttp.post('/chat/group', group);
+
+    return response.data?.group;
+  } catch (error: any) {
+    errorRes(error);
+  }
+};
+
+export const editGroup = async (group: ICreateGroup, id: string) => {
+  try {
+    const response = await baseHttp.put(`/chat/group/${id}`, group);
+
+    return response?.data?.group;
+  } catch (error: any) {
+    errorRes(error);
+  }
+};
+
+export const leaveGroup = async (id: string) => {
+  try {
+    const response = await baseHttp.patch(`/chat/group/${id}`);
+
+    return response?.data?.group;
   } catch (error: any) {
     errorRes(error);
   }

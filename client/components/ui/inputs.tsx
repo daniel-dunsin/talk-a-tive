@@ -7,6 +7,7 @@ interface InputProps {
   onChange: (value: string) => void;
   value: string;
   label?: string;
+  notRequired?: boolean;
 }
 
 const Input = (props: InputProps) => {
@@ -21,7 +22,7 @@ const Input = (props: InputProps) => {
         value={props.value}
         onChange={(e) => props.onChange(e.target.value)}
         className='w-full p-[6px] rounded-md text-[1rem] border-[1.5px] outline-none focus:border-blue-900'
-        required
+        required={props?.notRequired === undefined ? true : false}
         autoComplete=''
       />
     </div>

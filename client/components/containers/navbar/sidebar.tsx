@@ -1,7 +1,9 @@
 import Input from '@/components/ui/inputs';
 import Overlays from '@/components/ui/overlays';
-import UsersContainer from '@/components/ui/usersContainer';
-import { getUsers } from '@/lib/api/chat';
+import Preloader from '@/components/ui/preloader';
+import { SidebarUsersContainer } from '@/components/ui/usersContainer';
+import { getChats, getUsers, openChat } from '@/lib/api/chat';
+import { useGlobalContext } from '@/lib/context';
 import { IUser } from '@/lib/types/states.types';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
@@ -16,6 +18,8 @@ const Sidebar = (props: SidebarProps) => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>('');
+
+  const { setOpenedChat, setChats } = useGlobalContext();
 
   const searchUsers = async () => {
     if (search.length > 0) {
@@ -70,23 +74,17 @@ const Sidebar = (props: SidebarProps) => {
           {/* Users list */}
           <div className='flex w-full flex-col mt-4 space-y-4'>
             {users?.map((user: IUser, index: number) => (
-              <UsersContainer
+              <SidebarUsersContainer
                 setSidebarOpen={props.setSidebarOpen}
                 key={user?._id}
-                username={user?.username}
-                userId={user?._id}
-                dp={user?.dp}
+                user={user}
                 subtitle={{ key: 'Email', value: user?.email }}
               />
             ))}
           </div>
 
           {/* Loader */}
-          {isLoading && (
-            <span className='block mt-6 animate-spin max-w-fit ml-auto text-[1.8rem]'>
-              <BiLoaderAlt />
-            </span>
-          )}
+          {isLoading && <Preloader />}
         </div>
       </div>
     </Overlays>

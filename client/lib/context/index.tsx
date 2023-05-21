@@ -28,6 +28,7 @@ export const AppProvider = (props: IProviderProps) => {
   // Chat states
   const [loadingChat, setLoadingChat] = useState<boolean>(false);
   const [openedChat, setOpenedChat] = useState<IChat | null>(null);
+  const [chats, setChats] = useState<IChat[]>([]);
 
   return (
     <AppContext.Provider
@@ -37,6 +38,8 @@ export const AppProvider = (props: IProviderProps) => {
         setLoadingChat,
         openedChat,
         setOpenedChat,
+        chats,
+        setChats,
       }}
     >
       <ToastContainer
