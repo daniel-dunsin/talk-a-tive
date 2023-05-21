@@ -17,9 +17,10 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      await login({ detail, password });
-
-      router.push('/');
+      const data = await login({ detail, password });
+      if (data) {
+        router.push('/');
+      }
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);

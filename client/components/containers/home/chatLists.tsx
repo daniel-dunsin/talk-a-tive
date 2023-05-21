@@ -4,7 +4,7 @@ import { getChats } from '@/lib/api/chat';
 import { useGlobalContext } from '@/lib/context';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
-import { GroupModal } from './home-components';
+import { GroupModal } from './chatRoom/groupModal';
 
 interface ChatListProps {
   setOpenedLayer: Dispatch<SetStateAction<'ChatList' | 'ChatRoom'>>;

@@ -3,12 +3,12 @@
 @tailwind components;
 
 @font-face {
-  font-family: 'roboto';
-  src: url(../public/font/Roboto-Regular.ttf);
+  font-family: 'work-sans';
+  src: url(../public/font/WorkSans-VariableFont_wght.ttf);
 }
 
 html {
-  font-family: 'roboto';
+  font-family: 'work-sans';
 }
 
 body {
@@ -23,6 +23,7 @@ body {
   width: 5px;
   height: 7px;
   background-color: transparent;
+  letter-spacing: -1px;
 }
 
 *::-webkit-scrollbar-track {

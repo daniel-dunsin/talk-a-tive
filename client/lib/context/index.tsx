@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { ReactElement, useContext, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { errorRes } from '../api/api-responses';
 import { IAppContext } from '../types/index.types';
@@ -8,7 +8,6 @@ import { IChat, IUser } from '../types/states.types';
 
 interface IProviderProps {
   children: ReactElement | ReactElement[];
-  user: IUser;
 }
 
 const AppContext = React.createContext({} as IAppContext);
@@ -20,10 +19,12 @@ export const AppProvider = (props: IProviderProps) => {
   const location: any =
     typeof window !== 'undefined' ? window?.location : undefined;
 
-  if (!user && location?.pathname !== '/auth') {
-    location?.replace?.('/auth');
-    errorRes("You're not authorized to access this route");
-  }
+  useEffect(() => {
+    if (!user && location?.pathname !== '/auth') {
+      location?.replace?.('/auth');
+      errorRes("You're not authorized to access this route");
+    }
+  }, []);
 
   // Chat states
   const [loadingChat, setLoadingChat] = useState<boolean>(false);

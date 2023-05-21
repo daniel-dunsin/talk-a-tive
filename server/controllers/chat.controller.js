@@ -54,7 +54,7 @@ module.exports.createGroup = asyncHandler(async (req, res, next) => {
     groupAdmin: req.userId,
   });
 
-  group = await group.populate('users');
+  group = await group.populate('users', '-password');
 
   res.status(StatusCodes.OK).send({ group });
 });

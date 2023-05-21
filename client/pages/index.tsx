@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from '@/styles/Home.module.css';
 import Navbar from '@/components/containers/navbar/navbar';
 import ChatsList from '@/components/containers/home/chatLists';
-import ChatRoom from '@/components/containers/home/chatRoom';
+import ChatRoom from '@/components/containers/home/chatRoom/chatRoom';
 
 export default function Home() {
   // For mobile screens only
