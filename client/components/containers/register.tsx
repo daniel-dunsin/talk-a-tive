@@ -32,10 +32,16 @@ const Register = () => {
     }
 
     try {
-      await register({ username, email, password, confirmPassword, dp });
+      const data = await register({
+        username,
+        email,
+        password,
+        confirmPassword,
+        dp,
+      });
 
+      if (data) router.push('/');
       setIsLoading(false);
-      router.push('/');
     } catch (error) {
       setIsLoading(false);
     }

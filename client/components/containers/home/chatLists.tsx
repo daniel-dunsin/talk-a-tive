@@ -1,10 +1,12 @@
 import ContentBox, { ContentBoxWithHeader } from '@/components/ui/contentBox';
 import SingleChat from '@/components/ui/singleChat';
-import { getChats } from '@/lib/api/chat';
 import { useGlobalContext } from '@/lib/context';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
 import { GroupModal } from './chatRoom/groupModal';
+
+// To import stuffs dynamically
+import dynamic from 'next/dynamic';
 
 interface ChatListProps {
   setOpenedLayer: Dispatch<SetStateAction<'ChatList' | 'ChatRoom'>>;
@@ -20,7 +22,10 @@ const ChatsList = (props: ChatListProps) => {
   };
 
   const fetchChats = async () => {
+    const { getChats } = await import('@/lib/api/chat');
+
     const chats = await getChats();
+
     setChats(chats);
   };
 

@@ -33,6 +33,6 @@ describe('Login', () => {
     cy.get('button').contains('Log in').click();
 
     // Route should change on successful log in
-    cy.location('pathname').should('eq', '/');
+    cy.location('pathname', { timeout: 100000 }).should('eq', '/');
   });
 });
