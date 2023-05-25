@@ -52,37 +52,39 @@ mongoose
       console.log('Connected to web socket');
 
       socket.on('auth user', (user) => {
-        console.log('User authenticated: ' + user._id);
+        console.log('User authenticated: ' + user?._id);
         // Create a new room for the user
-        socket.join(user._id);
+        socket.join(user?._id);
         socket.emit('connected');
       });
 
       // Create room for a chat
       socket.on('join chat', (chat) => {
-        socket.join(chat._id);
-        console.log('User joined room: ' + chat._id);
+        socket.join(chat?._id);
+        console.log('User joined room: ' + chat?._id);
       });
 
       socket.on('send message', (message) => {
-        const chat = message.chat;
+        const chat = message?.chat;
 
         if (!chat.users || chat.users.length < 2) return console.log('No user');
 
         // Send to other user's room apart from the sender's room
-        chat.users.forEach((user) => {
-          if (user !== message.sender._id) {
-            socket.in(user).emit('new message', message);
+        chat?.users.forEach((user) => {
+          if (user?._id !== message.sender?._id) {
+            socket.in(chat?._id).emit('new message', message);
           }
         });
+
+        console.log('message sent');
       });
 
       socket.on('typing', (chat) => {
-        socket.in(chat._id).emit('typing', chat);
+        socket.in(chat?._id).emit('typing', chat);
       });
 
       socket.on('stop typing', (chat) => {
-        socket.in(chat._id).emit('stop typing', chat);
+        socket.in(chat?._id).emit('stop typing', chat);
       });
     });
   })

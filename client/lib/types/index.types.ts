@@ -9,4 +9,7 @@ export interface IAppContext {
   setOpenedChat: Dispatch<SetStateAction<IChat | null>>;
   chats: IChat[];
   setChats: Dispatch<SetStateAction<IChat[]>>;
+  notifications: IChat[];
+  notify: (notification: IChat) => void;
+  removeNotification: (notification: IChat) => void;
 }

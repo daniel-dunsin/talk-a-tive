@@ -30,6 +30,17 @@ export const AppProvider = (props: IProviderProps) => {
   const [loadingChat, setLoadingChat] = useState<boolean>(false);
   const [openedChat, setOpenedChat] = useState<IChat | null>(null);
   const [chats, setChats] = useState<IChat[]>([]);
+  const [notifications, setNotifications] = useState<IChat[]>([]);
+
+  const notify = (notification: IChat) => {
+    setNotifications([...notifications, notification]);
+  };
+
+  const removeNotification = (notification: IChat) => {
+    setNotifications((prevNotification) =>
+      prevNotification.filter((not) => not._id !== notification._id)
+    );
+  };
 
   return (
     <AppContext.Provider
@@ -41,6 +52,9 @@ export const AppProvider = (props: IProviderProps) => {
         setOpenedChat,
         chats,
         setChats,
+        notify,
+        removeNotification,
+        notifications,
       }}
     >
       <ToastContainer

@@ -7,6 +7,7 @@ import Modal from '@/components/ui/modalOverlay';
 import { logout } from '@/lib/api/auth';
 import { useGlobalContext } from '@/lib/context';
 import React, { Dispatch, SetStateAction } from 'react';
+import { getChatMate } from '@/lib/utilities/chat.utils';
 
 interface UserProfileListProps {
   setProfileTabOpen: Dispatch<SetStateAction<boolean>>;
@@ -65,6 +66,44 @@ export const ProfileModal = (props: ProfileModalProps) => {
         </div>
       </div>
     </Modal>
+  );
+};
+
+interface INotificationDrawerOpen {
+  setDrawerOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export const NotificationDrawer = (props: INotificationDrawerOpen) => {
+  const { notifications, user, setOpenedChat } = useGlobalContext();
+
+  return (
+    <ContentBox
+      size='md'
+      styles='scale-up absolute top-[150%] right-[0] w-[240px] max-w-[90vw] shadow-md z-[4] !p-0 overflow-hidden'
+    >
+      {notifications?.length === 0 ? (
+        <>
+          <p className={styles.paragraph}>No new notification</p>
+        </>
+      ) : (
+        notifications?.map((notification) => {
+          return (
+            <p
+              className={styles.paragraph}
+              onClick={() => {
+                setOpenedChat(notification);
+                props.setDrawerOpen(false);
+              }}
+            >
+              {/* If it is a group chat, display group name, else display other user name */}
+              {notification?.isGroupChat
+                ? notification?.name
+                : getChatMate(notification, user)?.username}
+            </p>
+          );
+        })
+      )}
+    </ContentBox>
   );
 };
 

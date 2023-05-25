@@ -20,9 +20,13 @@ module.exports.sendMessage = asyncHandler(async (req, res, next) => {
   ).populate('chat');
 
   //   Update the latest message
-  await Chat.findByIdAndUpdate(chatId, { latestMessage: message?._id });
+  const chat = await Chat.findByIdAndUpdate(
+    chatId,
+    { latestMessage: message?._id },
+    { runValidators: true, new: true }
+  ).populate('users');
 
-  res.status(StatusCodes.OK).send({ message });
+  res.status(StatusCodes.OK).send({ message: { ...message._doc, chat } });
 });
 
 module.exports.getAllMessages = asyncHandler(async (req, res, next) => {

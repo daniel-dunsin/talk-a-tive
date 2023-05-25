@@ -4,6 +4,10 @@ import Navbar from '@/components/containers/navbar/navbar';
 import ChatsList from '@/components/containers/home/chatLists';
 import ChatRoom from '@/components/containers/home/chatRoom/chatRoom';
 import { useGlobalContext } from '@/lib/context';
+import { io } from 'socket.io-client';
+
+const socketUrl = 'http://localhost:3001/';
+let socket = io(socketUrl);
 
 export default function Home() {
   const { openedChat } = useGlobalContext();
@@ -25,12 +29,14 @@ export default function Home() {
       {width >= 900 && (
         <div className='w-full grid-cols-1 sm:grid-cols-3 grid p-4 gap-4'>
           <ChatsList />
-          <ChatRoom />
+          <ChatRoom socket={socket} />
         </div>
       )}
 
       {width < 900 && (
-        <div className='p-4'>{!openedChat ? <ChatsList /> : <ChatRoom />}</div>
+        <div className='p-4'>
+          {!openedChat ? <ChatsList /> : <ChatRoom socket={socket} />}
+        </div>
       )}
     </div>
   );

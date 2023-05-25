@@ -13,11 +13,19 @@ import { getAllMessages } from '@/lib/api/message';
 import Messages from './messages';
 import { io, Socket } from 'socket.io-client';
 
-const socketUrl = 'http://localhost:3001/';
-let socket = io(socketUrl);
+interface ChatRoomProps {
+  socket: Socket;
+}
 
-const ChatRoom = () => {
-  const { openedChat, user, setOpenedChat } = useGlobalContext();
+const ChatRoom = ({ socket }: ChatRoomProps) => {
+  const {
+    openedChat,
+    user,
+    setOpenedChat,
+    notify,
+    removeNotification,
+    notifications,
+  } = useGlobalContext();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [groupModalOpen, setGroupModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -43,13 +51,12 @@ const ChatRoom = () => {
   useEffect(() => {
     if (openedChat?._id) {
       fetchMessages();
+      // Once opened, remove the chat from notifications
+      if (notifications?.find((not) => not?._id === openedChat?._id)) {
+        removeNotification(openedChat);
+      }
     }
   }, [openedChat]);
-
-  useEffect(() => {
-    socket.emit('auth user', user);
-    socket.on('connected', () => setSocketConnected(true));
-  }, []);
 
   useEffect(() => {
     socket.emit('join chat', openedChat);
@@ -59,6 +66,11 @@ const ChatRoom = () => {
     socket.on('new message', (message: IMessage) => {
       if (message.chat._id === openedChat?._id) {
         setMessages([...messages, message]);
+      } else {
+        // Notify the user
+        if (!notifications?.find((not) => not._id === message.chat._id)) {
+          notify(message.chat);
+        }
       }
     });
 

@@ -2,15 +2,20 @@ import { useGlobalContext } from '@/lib/context';
 import React, { useState } from 'react';
 import { BiBell, BiChevronDown, BiSearch } from 'react-icons/bi';
 import ContentBox from '../../ui/contentBox';
-import { ProfileModal, UserProfileList } from './navbar-components';
+import {
+  NotificationDrawer,
+  ProfileModal,
+  UserProfileList,
+} from './navbar-components';
 import Sidebar from './sidebar';
 
 const Navbar = () => {
   const [profileTabOpen, setProfileTabOpen] = useState<boolean>(false);
   const [profileModalOpen, setProfileModalOpen] = useState<boolean>(false);
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
-  const { user } = useGlobalContext();
+  const { user, notifications } = useGlobalContext();
 
   return (
     <>
@@ -39,10 +44,23 @@ const Navbar = () => {
 
           <div className='flex flex-row space-x-7 items-center'>
             {/* Notification */}
-            <div>
-              <span className='text-[25px] text-gray-800'>
+            <div className='relative'>
+              <span
+                className='text-[25px] text-gray-800 cursor-pointer relative'
+                onClick={() => setDrawerOpen((prev) => !prev)}
+              >
+                {/* Notification badge */}
+                {notifications?.length > 0 && (
+                  <span className='absolute -top-[6px] -right-[6px] font-bold w-[15px] h-[15px] flex items-center justify-center rounded-full text-white bg-red-500 text-[0.7rem]'>
+                    {notifications?.length}
+                  </span>
+                )}
+
                 <BiBell />
               </span>
+              {drawerOpen && (
+                <NotificationDrawer setDrawerOpen={setDrawerOpen} />
+              )}
             </div>
 
             {/* User profile */}
