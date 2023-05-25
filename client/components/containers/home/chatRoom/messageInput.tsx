@@ -4,16 +4,23 @@ import { IMessage } from '@/lib/types/states.types';
 import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { BiPaperPlane } from 'react-icons/bi';
 import { FaPaperPlane } from 'react-icons/fa';
+import { Socket } from 'socket.io-client';
 
 export interface IMessageInput {
   messages: IMessage[];
   setMessages: Dispatch<SetStateAction<IMessage[]>>;
+  socket: Socket;
+  typing: boolean;
+  setTyping: Dispatch<SetStateAction<boolean>>;
+  setLastTypingTime: Dispatch<SetStateAction<number>>;
 }
 
 const MessageInput = (props: IMessageInput) => {
-  const { openedChat } = useGlobalContext();
+  const { openedChat, user } = useGlobalContext();
 
   const [text, setText] = useState<string>('');
+
+  let timeout: NodeJS.Timeout;
 
   const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,8 +29,25 @@ const MessageInput = (props: IMessageInput) => {
       setText('');
       const message = await sendMessage(text, openedChat?._id as string);
 
+      props.socket.emit('send message', message);
+
+      props.socket.emit('stop typing', openedChat);
+
       props.setMessages([...props.messages, message]);
     }
+  };
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
+
+    props.socket.emit('typing', openedChat);
+
+    // Clear the timeout before setting a new one!!!!!!!!
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      props.socket.emit('stop typing', openedChat);
+    }, 1500);
   };
 
   return (
@@ -35,7 +59,7 @@ const MessageInput = (props: IMessageInput) => {
         <input
           type='text'
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={onChange}
           className='w-full p-2 border-b-2 border-b-[#555] focus:border-[royalblue] outline-none bg-transparent transition-all duration-100'
           placeholder='Type message here'
         />

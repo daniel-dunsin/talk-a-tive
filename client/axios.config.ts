@@ -16,9 +16,14 @@ baseHttp.interceptors.response.use(
   (error: AxiosError) => {
     const config = error.config;
 
-    if ((error?.response?.data as any)?.err?.name === 'JsonWebTokenError') {
+    if (
+      localStorage.getItem('token') &&
+      (error?.response?.data as any)?.err?.name === 'JsonWebTokenError'
+    ) {
       // This is due to ssr
       window.location.reload();
+    } else {
+      window.location.replace('/auth');
     }
 
     return Promise.reject(error);

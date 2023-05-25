@@ -1,7 +1,8 @@
 import { useGlobalContext } from '@/lib/context';
 import { IMessage } from '@/lib/types/states.types';
 import { ownsPreviousMessage } from '@/lib/utilities/chat.utils';
-import React from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import { Socket } from 'socket.io-client';
 
 interface IMessages {
   messages: IMessage[];
@@ -10,7 +11,7 @@ interface IMessages {
 }
 
 const Messages = (props: IMessages) => {
-  const { user } = useGlobalContext();
+  const { user, openedChat } = useGlobalContext();
 
   return (
     <article

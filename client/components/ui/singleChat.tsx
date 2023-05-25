@@ -5,7 +5,6 @@ import React, { Dispatch, SetStateAction } from 'react';
 import ContentBox from './contentBox';
 
 interface SingleChatProps {
-  setOpenedLayer: Dispatch<SetStateAction<'ChatList' | 'ChatRoom'>>;
   chat: IChat;
 }
 
@@ -26,8 +25,6 @@ const SingleChat = (props: SingleChatProps) => {
       onClick={() => {
         // Open the chat
         setOpenedChat(props?.chat);
-        // For mobile open the chat room as well
-        props?.setOpenedLayer('ChatRoom');
       }}
     >
       <div className='flex flex-col space-y-1'>

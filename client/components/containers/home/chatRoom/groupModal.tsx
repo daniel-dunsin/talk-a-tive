@@ -101,7 +101,7 @@ export const GroupModal = (props: GroupModalProps) => {
     const chats = await getChats();
 
     setLeavingGroup(false);
-
+    setOpenedChat(null);
     if (group) {
       setChats(chats);
       setOpenedChat(null);

@@ -15,7 +15,9 @@ module.exports.sendMessage = asyncHandler(async (req, res, next) => {
     sender: req.userId,
   });
 
-  message = await message.populate('sender', '-password');
+  message = await (
+    await message.populate('sender', '-password')
+  ).populate('chat');
 
   //   Update the latest message
   await Chat.findByIdAndUpdate(chatId, { latestMessage: message?._id });

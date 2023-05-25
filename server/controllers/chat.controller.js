@@ -11,6 +11,7 @@ module.exports.accessChat = asyncHandler(async (req, res, next) => {
   // Check if the chat that contains both users has already been created
   const chatInDb = await Chat.findOne({
     $and: [{ users: req.userId }, { users: friendId }],
+    isGroupChat: false,
   }).populate('users', '-password');
 
   if (chatInDb) {
@@ -32,7 +33,8 @@ module.exports.accessChat = asyncHandler(async (req, res, next) => {
 module.exports.getChats = asyncHandler(async (req, res, next) => {
   let chats = await Chat.find({ users: req.userId })
     .populate('users', '-password')
-    .populate('latestMessage');
+    .populate('latestMessage')
+    .sort('-updatedAt');
 
   chats = await User.populate(chats, {
     path: 'latestMessage.sender',

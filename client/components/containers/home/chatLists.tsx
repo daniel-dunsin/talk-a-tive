@@ -8,11 +8,7 @@ import { GroupModal } from './chatRoom/groupModal';
 // To import stuffs dynamically
 import dynamic from 'next/dynamic';
 
-interface ChatListProps {
-  setOpenedLayer: Dispatch<SetStateAction<'ChatList' | 'ChatRoom'>>;
-}
-
-const ChatsList = (props: ChatListProps) => {
+const ChatsList = () => {
   const { chats, setChats } = useGlobalContext();
   const [createGroupModalOpen, setCreateGroupModalOpen] =
     useState<boolean>(false);
@@ -59,13 +55,7 @@ const ChatsList = (props: ChatListProps) => {
         {/* Render chats */}
         <div className='flex flex-col space-y-4'>
           {chats?.map((chat) => {
-            return (
-              <SingleChat
-                key={chat._id}
-                chat={chat}
-                setOpenedLayer={props?.setOpenedLayer}
-              />
-            );
+            return <SingleChat key={chat._id} chat={chat} />;
           })}
         </div>
       </>
